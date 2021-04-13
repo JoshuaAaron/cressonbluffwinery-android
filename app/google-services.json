@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "295946231426",
+    "project_id": "cresson-bluff-winery",
+    "storage_bucket": "cresson-bluff-winery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:295946231426:android:5ca3e6401cd285ac8c5e9b",
+        "android_client_info": {
+          "package_name": "com.cressonbluffwinery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "295946231426-np6eclfophbm34dfgh0o685nir7udjav.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cressonbluffwinery",
+            "certificate_hash": "b7a1311beec9de56ea8c12818399f6bc60fe5da0"
+          }
+        },
+        {
+          "client_id": "295946231426-b9tikq7mmps50q08isuo3o411lpu190b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTJ69wLgi49RyJR6S_BdXRyYywM83XGmQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "295946231426-b9tikq7mmps50q08isuo3o411lpu190b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
