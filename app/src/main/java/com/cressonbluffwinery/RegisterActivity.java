@@ -86,14 +86,14 @@ public class RegisterActivity extends AppCompatActivity {
         RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!(snapshot.child("Users").child(phone).exists()))
+                if (!(snapshot.child("Users").child(name).exists()))
                 {
                     HashMap<String, Object> userDataMap = new HashMap<>();
                     userDataMap.put("phone", phone);
                     userDataMap.put("password", password);
                     userDataMap.put("name", name);
 
-                    RootRef.child("Users").child(phone).updateChildren(userDataMap)
+                    RootRef.child("Users").child(name).updateChildren(userDataMap)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task)
@@ -117,9 +117,9 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(RegisterActivity.this, "This " + phone + "is already registered.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "The username" + name + "is already registered.", Toast.LENGTH_SHORT).show();
                     loadingBar.dismiss();
-                    Toast.makeText(RegisterActivity.this, "Please try again using another phone number.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Please try again using a different username.", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                     startActivity(intent);

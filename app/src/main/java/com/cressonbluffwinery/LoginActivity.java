@@ -9,23 +9,27 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Toast;
+import android.widget.EditText;
 
 import com.cressonbluffwinery.Model.Users;
+import com.cressonbluffwinery.Prevalent.Prevalent;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.rey.material.widget.EditText;
 
-public class LoginActivity extends AppCompatActivity 
-{
+import io.paperdb.Paper;
+
+public class LoginActivity extends AppCompatActivity {
     private EditText InputUsername, InputPassword;
     private Button LoginButton;
     private ProgressDialog loadingBar;
     
     private String parentDbName = "Users";
+    private CheckBox chkBoxRememberMe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,11 @@ public class LoginActivity extends AppCompatActivity
         InputUsername = (EditText) findViewById(R.id.login_username_input);
         InputPassword = (EditText) findViewById(R.id.login_password_input);
         loadingBar = new ProgressDialog(this);
-        
+
+
+        chkBoxRememberMe = (CheckBox) findViewById(R.id.remember_me_chkb);
+        Paper.init(this);
+
         LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) 
@@ -45,8 +53,6 @@ public class LoginActivity extends AppCompatActivity
             }
         });
     }
-    
-    
 
     private void LoginUser() 
     {
@@ -70,8 +76,16 @@ public class LoginActivity extends AppCompatActivity
         }
 }
 
-    private void AllowAccessToAccount(String username, String password) 
+    private void AllowAccessToAccount(String name, String password)
     {
+        if (chkBoxRememberMe.isChecked())
+        {
+            Paper.book().write(Prevalent.UserNameKey, name);
+            Paper.book().write(Prevalent.UserPasswordKey, password);
+
+        }
+
+
         final DatabaseReference RootRef;
         RootRef = FirebaseDatabase.getInstance().getReference();
         
@@ -79,11 +93,11 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) 
             {
-                if (snapshot.child(parentDbName).child(username).exists())
+                if (snapshot.child(parentDbName).child(name).exists())
                 {
-                    Users usersData = snapshot.child(parentDbName).child(username).getValue(Users.class);
+                    Users usersData = snapshot.child(parentDbName).child(name).getValue(Users.class);
 
-                    if (usersData.getName().equals(username))
+                    if (usersData.getName().equals(name))
                     {
                         if (usersData.getPassword().equals(password))
                         {
@@ -92,13 +106,17 @@ public class LoginActivity extends AppCompatActivity
 
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             startActivity(intent);
-
+                        }
+                        else
+                        {
+                            loadingBar.dismiss();
+                            Toast.makeText(LoginActivity.this, "Password is incorrect", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
                 else
                 {
-                    Toast.makeText(LoginActivity.this, "Account with  " + username + "does not exist", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Account with  " + name + " does not exist", Toast.LENGTH_SHORT).show();
                     loadingBar.dismiss();
                     Toast.makeText(LoginActivity.this, "Please create a new account.", Toast.LENGTH_SHORT).show();
                 }
