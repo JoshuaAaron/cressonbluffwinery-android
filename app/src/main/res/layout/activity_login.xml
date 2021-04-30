@@ -19,7 +19,7 @@
         />
 
     <EditText
-        android:id="@+id/login_phone_number_input"
+        android:id="@+id/login_username_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_applogo"
@@ -27,10 +27,10 @@
         android:padding="20dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:hint="Phone Number"
-        android:inputType="number"
+        android:hint="Username"
+        android:inputType="text"
         android:textColor="@color/colorPrimaryDark"
-        android:textColorHint="@color/colorPrimaryDark"
+        android:textColorHint="@color/colorHintText"
         android:textSize="17sp"
         android:textStyle="bold"
         />
@@ -39,7 +39,7 @@
         android:id="@+id/login_password_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/login_phone_number_input"
+        android:layout_below="@+id/login_username_input"
         android:background="@drawable/input_design"
         android:padding="20dp"
         android:layout_marginTop="6dp"
@@ -48,7 +48,7 @@
         android:hint="Password"
         android:inputType="textWebPassword"
         android:textColor="@color/colorPrimaryDark"
-        android:textColorHint="@color/colorPrimaryDark"
+        android:textColorHint="@color/colorHintText"
         android:textSize="17sp"
         android:textStyle="bold"
         />
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:text="Forgot Password?"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="17sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             android:layout_marginLeft="80dp"
             />
