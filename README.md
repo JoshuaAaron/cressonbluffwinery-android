@@ -1,7 +1,6 @@
-# cressonbluffwinery-android
-Cresson Bluff Winery: An ecommerce app built in Java with a backend in Firebase.that manages the wine club for Cresson Bluff Winery and Vineyards
+Cresson Bluff Winery: An ecommerce app built in Java with a backend in Firebase
 
-App Purpose: An ecommerce app designed to allow users to browse wines, join the CBW wine club, and make secured purchases. 
+App Purpose: An Android app designed to allow users to browse wines, join the CBW wine club, and make secured purchases.  
 
 MVP:
 
