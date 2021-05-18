@@ -3,7 +3,8 @@
     <style name="Theme.CressonBluffWinery" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-d        <item name="colorOnPrimary">@color/colorNavBarText</item>
+        d
+        <item name="colorOnPrimary">@color/colorNavBarText</item>
         <!-- Secondary brand color. -->
         <item name="colorAccent">@color/colorTextDark</item>
         <item name="colorSecondaryVariant">@color/colorText</item>
@@ -11,4 +12,13 @@ d        <item name="colorOnPrimary">@color/colorNavBarText</item>
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.CressonBluffWinery.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.CressonBluffWinery.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.CressonBluffWinery.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
