@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cressonbluffwinery" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.cressonbluffwinery">
 
-    <application
+    <application tools:replace="android:theme"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CressonBluffWinery" >
+        android:theme="@style/Theme.CressonBluffWinery"
+        >
+        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".SearchProductsActivity" />
+        <activity android:name=".ProductDetailsActivity" />
+        <activity android:name=".ConfirmFinalOrderActivity" />
+        <activity android:name=".CartActivity" />
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/Theme.CressonBluffWinery.NoActionBar" >
-        </activity>
+            android:theme="@style/Theme.CressonBluffWinery.NoActionBar" />
         <activity android:name=".AdminCategoryActivity" />
         <activity android:name=".AdminAddNewProductActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity" >
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
