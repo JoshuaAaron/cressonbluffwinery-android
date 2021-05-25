@@ -1,17 +1,18 @@
 package com.cressonbluffwinery;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.EditText;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.cressonbluffwinery.Model.Users;
 import com.cressonbluffwinery.Prevalent.Prevalent;
 import com.google.firebase.database.DataSnapshot;
@@ -42,13 +43,9 @@ public class LoginActivity extends AppCompatActivity {
         InputPassword = (EditText) findViewById(R.id.login_password_input);
         AdminLink = (TextView) findViewById(R.id.admin_panel_link);
         NotAdminLink = (TextView) findViewById(R.id.not_admin_panel_link);
-
         loadingBar = new ProgressDialog(this);
-
-
         chkBoxRememberMe = (CheckBox) findViewById(R.id.remember_me_chkb);
         Paper.init(this);
-
         LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) 
@@ -104,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 }
 
-    private void AllowAccessToAccount(String name, String password)
+    private void AllowAccessToAccount(final String name, final String password)
     {
         if (chkBoxRememberMe.isChecked())
         {
@@ -112,11 +109,8 @@ public class LoginActivity extends AppCompatActivity {
             Paper.book().write(Prevalent.UserPasswordKey, password);
 
         }
-
-
         final DatabaseReference RootRef;
         RootRef = FirebaseDatabase.getInstance().getReference();
-        
         RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) 
@@ -143,6 +137,7 @@ public class LoginActivity extends AppCompatActivity {
                                 loadingBar.dismiss();
 
                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                Prevalent.currentOnlineUser = usersData;
                                 startActivity(intent);
                             }
 
