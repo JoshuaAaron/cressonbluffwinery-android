@@ -34,30 +34,38 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SettingsActivity extends AppCompatActivity {
     private CircleImageView profileImageView;
-    private EditText fullNameEditText, userPhoneEditText, addressEditText;
+    private EditText userNameEditText, firstNameEditText, lastNameEditText;
+    private EditText userPhoneEditText, addressEditText, cityEditText, stateEditText, zipEditText;
     private TextView profileChangeTextBtn,  closeTextBtn, saveTextButton;
 
     private Uri imageUri;
     private String myUrl = "";
     private StorageTask uploadTask;
-    private StorageReference storageProfilePrictureRef;
+    private StorageReference storageProfilePictureRef;
     private String checker = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        storageProfilePrictureRef = FirebaseStorage.getInstance().getReference().child("Profile pictures");
+        storageProfilePictureRef = FirebaseStorage.getInstance().getReference().child("Profile pictures");
 
-        profileImageView = (CircleImageView) findViewById(R.id.settings_profile_image);
-        fullNameEditText = (EditText) findViewById(R.id.settings_full_name);
-        userPhoneEditText = (EditText) findViewById(R.id.settings_phone_number);
-        addressEditText = (EditText) findViewById(R.id.settings_address);
-        profileChangeTextBtn = (TextView) findViewById(R.id.profile_image_change_btn);
-        closeTextBtn = (TextView) findViewById(R.id.close_settings_btn);
-        saveTextButton = (TextView) findViewById(R.id.update_account_settings_btn);
+        profileImageView = findViewById(R.id.settings_profile_image);
+        userNameEditText = findViewById(R.id.settings_username);
+        firstNameEditText = findViewById(R.id.settings_first_name);
+        lastNameEditText = findViewById(R.id.settings_last_name);
+        userPhoneEditText = findViewById(R.id.settings_phone_number);
+        addressEditText = findViewById(R.id.settings_address);
+        cityEditText = findViewById(R.id.settings_city);
+        stateEditText = findViewById(R.id.settings_state);
+        zipEditText = findViewById(R.id.settings_zip);
 
-        userInfoDisplay(profileImageView, fullNameEditText, userPhoneEditText, addressEditText);
+        profileChangeTextBtn = findViewById(R.id.profile_image_change_btn);
+        closeTextBtn = findViewById(R.id.close_settings_btn);
+        saveTextButton = findViewById(R.id.update_account_settings_btn);
+
+        userInfoDisplay(profileImageView, userNameEditText, firstNameEditText, lastNameEditText,
+                userPhoneEditText, addressEditText, cityEditText, stateEditText, zipEditText);
 
         closeTextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,10 +107,15 @@ public class SettingsActivity extends AppCompatActivity {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
 
         HashMap<String, Object> userMap = new HashMap<>();
-        userMap. put("name", fullNameEditText.getText().toString());
+        userMap. put("name", userNameEditText.getText().toString());
+        userMap. put("firstName", firstNameEditText.getText().toString());
+        userMap. put("lastName", lastNameEditText.getText().toString());
         userMap. put("address", addressEditText.getText().toString());
-        userMap. put("phoneOrder", userPhoneEditText.getText().toString());
-        ref.child(Prevalent.currentOnlineUser.getPhone()).updateChildren(userMap);
+        userMap. put("city", cityEditText.getText().toString());
+        userMap. put("state", stateEditText.getText().toString());
+        userMap. put("zipCode", zipEditText.getText().toString());
+        userMap. put("phone", userPhoneEditText.getText().toString());
+        ref.child(Prevalent.currentOnlineUser.getName()).updateChildren(userMap);
         startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
         Toast.makeText(SettingsActivity.this, "Profile Info update successfully.", Toast.LENGTH_SHORT).show();
         finish();
@@ -122,7 +135,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(this, "Error, Try Again.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error, Please Try Again.", Toast.LENGTH_SHORT).show();
 
             startActivity(new Intent(SettingsActivity.this, SettingsActivity.class));
             finish();
@@ -134,17 +147,37 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void userInfoSaved()
     {
-        if (TextUtils.isEmpty(fullNameEditText.getText().toString()))
+        if (TextUtils.isEmpty(userNameEditText.getText().toString()))
         {
-            Toast.makeText(this, "Name is mandatory.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Username is mandatory.", Toast.LENGTH_SHORT).show();
+        }
+        else if (TextUtils.isEmpty(firstNameEditText.getText().toString()))
+        {
+            Toast.makeText(this, "First Name is empty.", Toast.LENGTH_SHORT).show();
+        }
+        else if (TextUtils.isEmpty(lastNameEditText.getText().toString()))
+        {
+            Toast.makeText(this, "Last Name is empty.", Toast.LENGTH_SHORT).show();
         }
         else if (TextUtils.isEmpty(addressEditText.getText().toString()))
         {
-            Toast.makeText(this, "Name is address.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Address is empty.", Toast.LENGTH_SHORT).show();
+        }
+        else if (TextUtils.isEmpty(cityEditText.getText().toString()))
+        {
+            Toast.makeText(this, "City is empty.", Toast.LENGTH_SHORT).show();
+        }
+        else if (TextUtils.isEmpty(stateEditText.getText().toString()))
+        {
+            Toast.makeText(this, "State is empty.", Toast.LENGTH_SHORT).show();
+        }
+        else if (TextUtils.isEmpty(zipEditText.getText().toString()))
+        {
+            Toast.makeText(this, "Zip Code is empty.", Toast.LENGTH_SHORT).show();
         }
         else if (TextUtils.isEmpty(userPhoneEditText.getText().toString()))
         {
-            Toast.makeText(this, "Name is mandatory.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Phone Number is empty.", Toast.LENGTH_SHORT).show();
         }
         else if(checker.equals("clicked"))
         {
@@ -160,10 +193,11 @@ public class SettingsActivity extends AppCompatActivity {
         progressDialog.show();
         if (imageUri != null)
         {
-            final StorageReference fileRef = storageProfilePrictureRef
-                    .child(Prevalent.currentOnlineUser.getPhone() + ".jpg");
+            final StorageReference fileRef = storageProfilePictureRef
+                    .child(Prevalent.currentOnlineUser.getName() + ".jpg");
 
             uploadTask = fileRef.putFile(imageUri);
+
             uploadTask.continueWithTask(new Continuation() {
                 @Override
                 public Object then(@NonNull Task task) throws Exception {
@@ -182,11 +216,16 @@ public class SettingsActivity extends AppCompatActivity {
                         myUrl = downloadUrl.toString();
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
                         HashMap<String, Object> userMap = new HashMap<>();
-                        userMap. put("name", fullNameEditText.getText().toString());
+                        userMap. put("name", userNameEditText.getText().toString());
+                        userMap. put("firstName", firstNameEditText.getText().toString());
+                        userMap. put("lastName", lastNameEditText.getText().toString());
                         userMap. put("address", addressEditText.getText().toString());
-                        userMap. put("phoneOrder", userPhoneEditText.getText().toString());
+                        userMap. put("city", cityEditText.getText().toString());
+                        userMap. put("state", stateEditText.getText().toString());
+                        userMap. put("zipCode", zipEditText.getText().toString());
+                        userMap. put("phone", userPhoneEditText.getText().toString());
                         userMap. put("image", myUrl);
-                        ref.child(Prevalent.currentOnlineUser.getPhone()).updateChildren(userMap);
+                        ref.child(Prevalent.currentOnlineUser.getName()).updateChildren(userMap);
                         progressDialog.dismiss();
                         startActivity(new Intent(SettingsActivity.this, HomeActivity.class));
                         Toast.makeText(SettingsActivity.this, "Profile Info update successfully.", Toast.LENGTH_SHORT).show();
@@ -205,9 +244,11 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
     }
-    private void userInfoDisplay(final CircleImageView profileImageView, final EditText fullNameEditText, final EditText userPhoneEditText, final EditText addressEditText)
+    private void userInfoDisplay(
+            final CircleImageView profileImageView,  final EditText userNameEditText, final EditText firstNameEditText, final EditText lastNameEditText,
+            final EditText userPhoneEditText, final EditText addressEditText, final EditText cityEditText, final EditText stateEditText, final EditText zipEditText)
     {
-        DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(Prevalent.currentOnlineUser.getPhone());
+        DatabaseReference UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(Prevalent.currentOnlineUser.getName());
         UsersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -217,12 +258,22 @@ public class SettingsActivity extends AppCompatActivity {
                     {
                         String image = dataSnapshot.child("image").getValue().toString();
                         String name = dataSnapshot.child("name").getValue().toString();
+                        String firstName = dataSnapshot.child("firstName").getValue().toString();
+                        String lastName = dataSnapshot.child("lastName").getValue().toString();
                         String phone = dataSnapshot.child("phone").getValue().toString();
                         String address = dataSnapshot.child("address").getValue().toString();
+                        String city = dataSnapshot.child("city").getValue().toString();
+                        String state = dataSnapshot.child("state").getValue().toString();
+                        String zipCode = dataSnapshot.child("zipCode").getValue().toString();
                         Picasso.get().load(image).into(profileImageView);
-                        fullNameEditText.setText(name);
+                        userNameEditText.setText(name);
+                        firstNameEditText.setText(firstName);
+                        lastNameEditText.setText(lastName);
                         userPhoneEditText.setText(phone);
                         addressEditText.setText(address);
+                        cityEditText.setText(city);
+                        stateEditText.setText(state);
+                        zipEditText.setText(zipCode);
                     }
                 }
 

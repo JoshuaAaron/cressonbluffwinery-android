@@ -26,6 +26,8 @@ public class ConfirmFinalOrderActivity extends AppCompatActivity {
     private EditText nameEditText,phoneEditText,addressEditText,cityEditText;
     private Button confirmOrderBtn;
     private String totalAmount = "";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +40,7 @@ public class ConfirmFinalOrderActivity extends AppCompatActivity {
         phoneEditText =(EditText) findViewById(R.id.shippment_phone_number);
         addressEditText =(EditText) findViewById(R.id.shippment_address);
         cityEditText =(EditText) findViewById(R.id.shippment_city);
+
         confirmOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,10 +57,10 @@ public class ConfirmFinalOrderActivity extends AppCompatActivity {
             Toast.makeText(this,"Please Provide Your Phone Number",Toast.LENGTH_SHORT).show();
         }
         else if(TextUtils.isEmpty(addressEditText.getText().toString())){
-            Toast.makeText(this,"Please Provide Your Valid Address.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Please Provide A Valid Address.",Toast.LENGTH_SHORT).show();
         }
         else if(TextUtils.isEmpty(cityEditText.getText().toString())){
-            Toast.makeText(this,"Please Provide Your City Name",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Please Provide the City Name",Toast.LENGTH_SHORT).show();
         }
         else {
 
@@ -71,10 +74,10 @@ public class ConfirmFinalOrderActivity extends AppCompatActivity {
         SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd. yyy");
         saveCurrentDate = currentDate.format(calForDate.getTime());
         SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a");
-        saveCurrentTime = currentDate.format(calForDate.getTime());
+        saveCurrentTime = currentTime.format(calForDate.getTime());
         final DatabaseReference ordersRef= FirebaseDatabase.getInstance().getReference()
                 .child("Orders")
-                .child(Prevalent.currentOnlineUser.getPhone());
+                .child(Prevalent.currentOnlineUser.getName());
         HashMap<String, Object> ordersMap = new HashMap<>();
         ordersMap.put("totalAmount",totalAmount);
         ordersMap.put("name",nameEditText.getText().toString());
@@ -84,6 +87,7 @@ public class ConfirmFinalOrderActivity extends AppCompatActivity {
         ordersMap.put("date",saveCurrentDate);
         ordersMap.put("time",saveCurrentTime);
         ordersMap.put("state", "Not Shipped");
+
         ordersRef.updateChildren(ordersMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -91,7 +95,7 @@ public class ConfirmFinalOrderActivity extends AppCompatActivity {
                     FirebaseDatabase.getInstance().getReference()
                             .child("Cart List")
                             .child("User view")
-                            .child(Prevalent.currentOnlineUser.getPhone())
+                            .child(Prevalent.currentOnlineUser.getName())
                             .removeValue()
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override

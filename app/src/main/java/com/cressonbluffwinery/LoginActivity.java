@@ -25,11 +25,11 @@ import com.rey.material.widget.CheckBox;
 import io.paperdb.Paper;
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText InputUsername, InputPassword;
+    private EditText InputUserName, InputPassword;
     private Button LoginButton;
     private ProgressDialog loadingBar;
     private TextView AdminLink, NotAdminLink;
-    
+
     private String parentDbName = "Users";
     private CheckBox chkBoxRememberMe;
 
@@ -39,13 +39,15 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         LoginButton = (Button) findViewById(R.id.login_btn);
-        InputUsername = (EditText) findViewById(R.id.login_username_input);
+        InputUserName = (EditText) findViewById(R.id.login_username_input);
         InputPassword = (EditText) findViewById(R.id.login_password_input);
         AdminLink = (TextView) findViewById(R.id.admin_panel_link);
         NotAdminLink = (TextView) findViewById(R.id.not_admin_panel_link);
         loadingBar = new ProgressDialog(this);
+
         chkBoxRememberMe = (CheckBox) findViewById(R.id.remember_me_chkb);
         Paper.init(this);
+
         LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) 
@@ -77,14 +79,15 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     private void LoginUser() 
     {
-        String username = InputUsername.getText().toString();
+        String name = InputUserName.getText().toString();
         String password = InputPassword.getText().toString();
 
-        if(TextUtils.isEmpty(username)) {
+        if(TextUtils.isEmpty(name)) {
             Toast.makeText(this, "Please make sure to type your username correctly.", Toast.LENGTH_SHORT).show();
         }
         else if(TextUtils.isEmpty(password)) {
@@ -96,8 +99,7 @@ public class LoginActivity extends AppCompatActivity {
             loadingBar.setCanceledOnTouchOutside(false);
             loadingBar.show();
 
-            AllowAccessToAccount(username, password);
-
+            AllowAccessToAccount(name, password);
         }
 }
 
@@ -109,15 +111,18 @@ public class LoginActivity extends AppCompatActivity {
             Paper.book().write(Prevalent.UserPasswordKey, password);
 
         }
+
         final DatabaseReference RootRef;
         RootRef = FirebaseDatabase.getInstance().getReference();
+
         RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) 
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                if (snapshot.child(parentDbName).child(name).exists())
+
+                if (dataSnapshot.child(parentDbName).child(name).exists())
                 {
-                    Users usersData = snapshot.child(parentDbName).child(name).getValue(Users.class);
+                    Users usersData = dataSnapshot.child(parentDbName).child(name).getValue(Users.class);
 
                     if (usersData.getName().equals(name))
                     {
@@ -140,7 +145,6 @@ public class LoginActivity extends AppCompatActivity {
                                 Prevalent.currentOnlineUser = usersData;
                                 startActivity(intent);
                             }
-
                         }
                         else
                         {
@@ -157,10 +161,12 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
+        @Override
+            public void onCancelled(@NonNull DatabaseError error)
+        {
+            throw error.toException();
+        }
         });
     }
 }

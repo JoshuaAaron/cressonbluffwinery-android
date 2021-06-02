@@ -3,10 +3,15 @@
     <color name="colorPrimary">#0c4e2e</color>
     <color name="colorPrimaryDark">#0c4e2e</color>
     <color name="colorSecondary">#0c4e2e</color>
+    <color name="colorSecondaryVariant">#0c4e2e</color>
+    <color name="colorOnSecondary">#FF0000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="productDetailsBg">#a9a9a9</color>
+
     <color name="colorText">#000</color>
     <color name="colorTextDark">#e9e9e9</color>
     <color name="colorNavBarText">#ffffff</color>
-    <color name="colorAccent">#4c2d8d</color>
+    <color name="colorAccent">#0c4e2e</color>
 
     <color name="colorHintText">#a8a499</color>
 </resources>
