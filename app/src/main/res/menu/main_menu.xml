@@ -34,6 +34,6 @@
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"
             android:title="Logout"
-            android:iconTint="@android:color/white"/>
+            android:iconTint="@android:color/black"/>
     </group>
 </menu>
