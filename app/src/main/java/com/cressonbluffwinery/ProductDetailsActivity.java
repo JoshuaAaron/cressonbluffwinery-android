@@ -28,35 +28,37 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 public class ProductDetailsActivity extends AppCompatActivity {
-    private Button addToCartButton;
+
     private ImageView productImage;
     private ElegantNumberButton numberButton;
     private TextView productPrice,productDescription,productName;
-    private String productID="", state = "Normal";
+    private String productID="",state="Normal";
+    private Button addToCart;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
-        productID = getIntent().getStringExtra("pid");
-        addToCartButton =(Button) findViewById(R.id.pd_add_to_cart_button);
-        numberButton = (ElegantNumberButton) findViewById(R.id.number_btn);
-        productImage = (ImageView) findViewById(R.id.product_image_details);
-        productName = (TextView) findViewById(R.id.product_name_details);
-        productDescription = (TextView) findViewById(R.id.product_description_details);
-        productPrice = (TextView) findViewById(R.id.product_price_details);
+
+        addToCart=findViewById(R.id.pd_add_to_cart_button);
+        productImage=findViewById(R.id.product_image_details);
+        productPrice=findViewById(R.id.product_price_details);
+        productDescription=findViewById(R.id.product_description_details);
+        productName=findViewById(R.id.product_name_details);
+        numberButton=findViewById(R.id.number_btn);
+        productID=getIntent().getStringExtra("pid");
+
         getProductDetails(productID);
 
-        addToCartButton.setOnClickListener(new View.OnClickListener() {
+        addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
 
-                if (state.equals("Order Placed") || state.equals("Order Shipped")){
-                    Toast.makeText(ProductDetailsActivity.this,"You can make additional purchases once your previous order is confirmed",Toast.LENGTH_LONG).show();
+                if(state.equals("AdminOrders placed")||state.equals("AdminOrders shipped") ){
+                    Toast.makeText(ProductDetailsActivity.this,"You can purchase more products once your order is shipped or confimed",Toast.LENGTH_LONG).show();
                 }
-                else
-                {
+                else {
                     addingToCartList();
                 }
             }
@@ -66,104 +68,98 @@ public class ProductDetailsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        CheckOrderState();
+        checkOrderStore();
     }
 
     private void addingToCartList() {
-        String saveCurrentTime,saveCurrentDate;
+        String saveCurrentDate, saveCurrentTime;
         Calendar calForDate = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd. yyy");
-        saveCurrentDate = currentDate.format(calForDate.getTime());
-        SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a");
-        saveCurrentTime = currentTime.format(calForDate.getTime());
-        final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Cart List");
-        final HashMap<String, Object>cartMap = new HashMap<>();
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM,dd yyyy");
+        saveCurrentDate=currentDate.format(calForDate.getTime());
+
+        SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a ");
+        saveCurrentTime=currentTime.format(calForDate.getTime());
+
+        final DatabaseReference cartListRef=FirebaseDatabase.getInstance().getReference().child("Cart List");
+        final HashMap<String,Object>  cartMap=new HashMap<>();
         cartMap.put("pid",productID);
         cartMap.put("pname",productName.getText().toString());
         cartMap.put("price",productPrice.getText().toString());
         cartMap.put("date",saveCurrentDate);
         cartMap.put("time",saveCurrentTime);
         cartMap.put("quantity",numberButton.getNumber());
-        //cartMap.put("discount","");
+        cartMap.put("discount","");
 
-        cartListRef.child("User view").child(Prevalent.currentOnlineUser.getName())
+        cartListRef.child("User View")
+                .child(Prevalent.currentOnlineUser.getPhone())
                 .child("Products").child(productID)
-                .updateChildren(cartMap).addOnCompleteListener(new OnCompleteListener<Void>()
-        {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    cartListRef.child("Admin view").child(Prevalent.currentOnlineUser.getName())
-                            .child("Products").child(productID)
-                            .updateChildren(cartMap)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                .updateChildren(cartMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            cartListRef.child("Admin View")
+                                    .child(Prevalent.currentOnlineUser.getPhone())
+                                    .child("Products").child(productID)
+                                    .updateChildren(cartMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()){
-                                        Toast.makeText(ProductDetailsActivity.this,"Added to Cart",Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(ProductDetailsActivity.this, HomeActivity.class);
+                                    if(task.isSuccessful()){
+                                        Toast.makeText(ProductDetailsActivity.this,"Added to Cart List",Toast.LENGTH_LONG).show();
+                                        Intent intent=new Intent(ProductDetailsActivity.this,HomeActivity.class);
                                         startActivity(intent);
                                     }
                                 }
                             });
-                }
-            }
-        });
-
+                        }
+                    }
+                });
 
 
     }
 
     private void getProductDetails(String productID) {
-        DatabaseReference productsRef = FirebaseDatabase.getInstance().getReference().child("Products");
+        final DatabaseReference productsRef= FirebaseDatabase.getInstance().getReference().child("Products");
         productsRef.child(productID).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
                     Products products=dataSnapshot.getValue(Products.class);
                     productName.setText(products.getPname());
                     productPrice.setText(products.getPrice());
                     productDescription.setText(products.getDescription());
                     Picasso.get().load(products.getImage()).into(productImage);
-
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
     }
 
-    //
-
-    private void CheckOrderState()
-    {
+    public void checkOrderStore(){
         DatabaseReference ordersRef;
-        ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(Prevalent.currentOnlineUser.getName());
+        ordersRef=FirebaseDatabase.getInstance().getReference().child("AdminOrders").child(Prevalent.currentOnlineUser.getPhone());
         ordersRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists())
-                {
-                    String shippingState = dataSnapshot.child("state").getValue().toString();
-                    if (shippingState.equals("Shipped")){
-                        state ="Order Shipped";
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    String shippingState=dataSnapshot.child("state").getValue().toString();
+                    if(shippingState.equals("shipped")){
+                        state="Order shipped";
                     }
-                    else if (shippingState.equals("Not Shipped")){
-                        state ="Order Placed";
+                    if(shippingState.equals("not shipped")){
+                        state="Order placed";
                     }
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
     }
-
-
-
 }

@@ -1,8 +1,5 @@
 package com.cressonbluffwinery;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,7 +25,7 @@ import java.util.HashMap;
 public class RegisterActivity extends AppCompatActivity {
 
     private Button CreateAccountButton;
-    private EditText InputName, InputPhoneNumber, InputPassword;
+    private EditText InputPhone, InputPassword;
     private ProgressDialog loadingBar;
 
     @Override
@@ -33,10 +33,9 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        CreateAccountButton = (Button) findViewById(R.id.register_btn);
-        InputName = (EditText) findViewById(R.id.register_username_input);
-        InputPhoneNumber = (EditText) findViewById(R.id.register_phone_number_input);
-        InputPassword = (EditText) findViewById(R.id.register_password_input);
+        CreateAccountButton = findViewById(R.id.button2);
+        InputPhone = findViewById(R.id.editText1);
+        InputPassword = findViewById(R.id.editText2);
         loadingBar = new ProgressDialog(this);
 
         CreateAccountButton.setOnClickListener(new View.OnClickListener() {
@@ -51,15 +50,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void CreateAccount()
     {
-        String name = InputName.getText().toString();
-        String phone = InputPhoneNumber.getText().toString();
+        String phone = InputPhone.getText().toString();
         String password = InputPassword.getText().toString();
 
-        if(TextUtils.isEmpty(name)) {
-            Toast.makeText(this, "Please enter a valid username", Toast.LENGTH_SHORT).show();
-        }
-
-        else if(TextUtils.isEmpty(phone)) {
+        if(TextUtils.isEmpty(phone)) {
             Toast.makeText(this, "Please enter a valid phone number", Toast.LENGTH_SHORT).show();
         }
 
@@ -72,28 +66,27 @@ public class RegisterActivity extends AppCompatActivity {
             loadingBar.setCanceledOnTouchOutside(false);
             loadingBar.show();
 
-            ValidateUser(name, phone, password);
+            ValidateUser(phone, password);
 
         }
 
     }
 
-    private void ValidateUser(String name, String phone, String password)
+    private void ValidateUser(String phone, String password)
     {
         final DatabaseReference RootRef;
         RootRef = FirebaseDatabase.getInstance().getReference();
 
         RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!(snapshot.child("Users").child(name).exists()))
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!(dataSnapshot.child("Users").child(phone).exists()))
                 {
                     HashMap<String, Object> userDataMap = new HashMap<>();
-                    userDataMap.put("phone", phone);
                     userDataMap.put("password", password);
-                    userDataMap.put("name", name);
+                    userDataMap.put("phone", phone);
 
-                    RootRef.child("Users").child(name).updateChildren(userDataMap)
+                    RootRef.child("Users").child(phone).updateChildren(userDataMap)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task)
@@ -117,9 +110,9 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(RegisterActivity.this, "The username" + name + "is already registered.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "This number " + phone + "is already registered.", Toast.LENGTH_SHORT).show();
                     loadingBar.dismiss();
-                    Toast.makeText(RegisterActivity.this, "Please try again using a different username.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Please try again using a different phone number.", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                     startActivity(intent);

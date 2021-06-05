@@ -25,7 +25,7 @@ import com.rey.material.widget.CheckBox;
 import io.paperdb.Paper;
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText InputUserName, InputPassword;
+    private EditText InputUserPhone, InputPassword;
     private Button LoginButton;
     private ProgressDialog loadingBar;
     private TextView AdminLink, NotAdminLink;
@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         LoginButton = (Button) findViewById(R.id.login_btn);
-        InputUserName = (EditText) findViewById(R.id.login_username_input);
+        InputUserPhone = (EditText) findViewById(R.id.login_phone_input);
         InputPassword = (EditText) findViewById(R.id.login_password_input);
         AdminLink = (TextView) findViewById(R.id.admin_panel_link);
         NotAdminLink = (TextView) findViewById(R.id.not_admin_panel_link);
@@ -84,14 +84,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private void LoginUser() 
     {
-        String name = InputUserName.getText().toString();
+        String phone = InputUserPhone.getText().toString();
         String password = InputPassword.getText().toString();
 
-        if(TextUtils.isEmpty(name)) {
-            Toast.makeText(this, "Please make sure to type your username correctly.", Toast.LENGTH_SHORT).show();
+        if(TextUtils.isEmpty(phone)) {
+            Toast.makeText(this, "Please make sure to type your phone number correctly.", Toast.LENGTH_SHORT).show();
         }
         else if(TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "Password and Username do not match.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Password and Phone Number do not match.", Toast.LENGTH_SHORT).show();
         }
         else {
             loadingBar.setTitle("Login Account");
@@ -99,15 +99,15 @@ public class LoginActivity extends AppCompatActivity {
             loadingBar.setCanceledOnTouchOutside(false);
             loadingBar.show();
 
-            AllowAccessToAccount(name, password);
+            AllowAccessToAccount(phone, password);
         }
 }
 
-    private void AllowAccessToAccount(final String name, final String password)
+    private void AllowAccessToAccount(final String phone, final String password)
     {
         if (chkBoxRememberMe.isChecked())
         {
-            Paper.book().write(Prevalent.UserNameKey, name);
+            Paper.book().write(Prevalent.UserPhoneKey, phone);
             Paper.book().write(Prevalent.UserPasswordKey, password);
 
         }
@@ -119,12 +119,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
+                Users user = dataSnapshot.getValue(Users.class);
 
-                if (dataSnapshot.child(parentDbName).child(name).exists())
+                if (dataSnapshot.child(parentDbName).child(phone).exists())
                 {
-                    Users usersData = dataSnapshot.child(parentDbName).child(name).getValue(Users.class);
+                    Users usersData = dataSnapshot.child(parentDbName).child(phone).getValue(Users.class);
 
-                    if (usersData.getName().equals(name))
+                    if (usersData.getPhone().equals(phone))
                     {
                         if (usersData.getPassword().equals(password))
                         {
@@ -155,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(LoginActivity.this, "Account with  " + name + " does not exist", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Account with  " + phone + " does not exist", Toast.LENGTH_SHORT).show();
                     loadingBar.dismiss();
                     Toast.makeText(LoginActivity.this, "Please create a new account.", Toast.LENGTH_SHORT).show();
                 }

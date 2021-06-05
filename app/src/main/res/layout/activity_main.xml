@@ -24,8 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="140dp"
-        android:layout_marginEnd="88dp"
+        android:layout_marginTop="160dp"
+        android:layout_marginEnd="80dp"
         android:text="Our vision is to share our 4 generations of wine making with our customers, all while making and selling the best wines in the country."
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
@@ -52,7 +52,7 @@
         />
 
     <Button
-        android:id="@+id/join_now_btn"
+        android:id="@+id/main_join_now_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/main_login_btn"

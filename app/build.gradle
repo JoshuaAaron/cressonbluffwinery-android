@@ -79,6 +79,8 @@ dependencies {
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
     implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.karumi:dexter:5.0.0'
+
 
     //added dependency for circular profile image view
     implementation 'de.hdodenhof:circleimageview:3.1.0'
