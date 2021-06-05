@@ -1,4 +1,4 @@
-package com.cressonbluffwinery.Prevalent;
+package com.cressonbluffwinery.ViewHolder;
 
 import android.view.View;
 import android.widget.TextView;

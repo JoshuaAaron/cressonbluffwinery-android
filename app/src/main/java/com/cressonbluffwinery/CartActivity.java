@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cressonbluffwinery.Model.Cart;
-import com.cressonbluffwinery.Prevalent.CartViewHolder;
+import com.cressonbluffwinery.ViewHolder.CartViewHolder;
 import com.cressonbluffwinery.Prevalent.Prevalent;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -42,12 +42,11 @@ public class CartActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        recyclerView = findViewById(R.id.cart_list);
+        recyclerView = findViewById(R.id.cart_list_recycler);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
-
         recyclerView.setLayoutManager(layoutManager);
-        NextProcessBtn = (Button)findViewById(R.id.next_btn);
+        NextProcessBtn = (Button)findViewById(R.id.next_process_btn);
         txtTotalAmount = (TextView)findViewById(R.id.total_price);
         txtMsg1 = (TextView)findViewById(R.id.msg1);
 
@@ -55,8 +54,8 @@ public class CartActivity extends AppCompatActivity{
         {
             @Override
             public void onClick(View view) {
-                txtTotalAmount.setText("Total Price = Rs."+String.valueOf(overTotalPrice));
-                Intent intent = new Intent(CartActivity.this,ConfirmFinalOrderActivity.class);
+                txtTotalAmount.setText("Total Price = $"+ String.valueOf(overTotalPrice));
+                Intent intent = new Intent(CartActivity.this, ConfirmOrderActivity.class);
                 intent.putExtra("Total Price", String.valueOf(overTotalPrice));
                 startActivity(intent);
                 finish();
@@ -74,8 +73,8 @@ public class CartActivity extends AppCompatActivity{
         FirebaseRecyclerOptions<Cart> options =
                 new FirebaseRecyclerOptions.Builder<Cart>()
                         .setQuery(cartListRef.child("User view")
-                                .child(Prevalent.currentOnlineUser.getName())
-                                .child("Products"),Cart.class)
+                                .child(Prevalent.currentOnlineUser.getPhone())
+                                .child("Products"), Cart.class)
                                 .build();
 
         FirebaseRecyclerAdapter<Cart, CartViewHolder> adapter
@@ -83,7 +82,7 @@ public class CartActivity extends AppCompatActivity{
             @Override
             protected void onBindViewHolder(@NonNull CartViewHolder holder, int position, @NonNull final Cart model) {
                 holder.txtProductQuantity.setText("Quantity = " + model.getQuantity());
-                holder.txtProductPrice.setText("Price = "+model.getPrice() + " $");
+                holder.txtProductPrice.setText("Price = "+ model.getPrice() + " $");
                 holder.txtProductName.setText(model.getPname());
                 int oneTypeProductTPrice = ((Integer.valueOf(model.getPrice())))* Integer.valueOf(model.getQuantity());
                 overTotalPrice = overTotalPrice + oneTypeProductTPrice;
@@ -108,7 +107,7 @@ public class CartActivity extends AppCompatActivity{
                                 }
                                 if (i==1){
                                     cartListRef.child("User view")
-                                            .child(Prevalent.currentOnlineUser.getName())
+                                            .child(Prevalent.currentOnlineUser.getPhone())
                                             .child("Products")
                                             .child(model.getPid())
                                             .removeValue()
@@ -145,7 +144,7 @@ public class CartActivity extends AppCompatActivity{
     private void CheckOrderState()
     {
         DatabaseReference ordersRef;
-        ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(Prevalent.currentOnlineUser.getName());
+        ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(Prevalent.currentOnlineUser.getPhone());
         ordersRef.addValueEventListener(new ValueEventListener()
         {
             @Override
@@ -158,7 +157,7 @@ public class CartActivity extends AppCompatActivity{
 
                     if (shippingState.equals("Shipped"))
                     {
-                        txtTotalAmount.setText("TDear "+userName+"\n order is shipped successfully.");
+                        txtTotalAmount.setText("TDear " +userName+ "\n order is shipped successfully.");
                         recyclerView.setVisibility(View.GONE);
                         txtMsg1.setVisibility(View.VISIBLE);
                         txtMsg1.setText("Congratulations, Your Final order has been shipped successfully. Soon you will received your order at your door step.");

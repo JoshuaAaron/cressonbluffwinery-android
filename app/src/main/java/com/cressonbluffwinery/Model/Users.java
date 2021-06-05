@@ -1,7 +1,7 @@
 package com.cressonbluffwinery.Model;
 
 public class Users {
-    private String name, firstName, lastName, phone, password,
+    private String email, name, firstName, lastName, phone, password,
             image, address, city, state, zipCode;
 
     public Users()
@@ -9,8 +9,11 @@ public class Users {
 
     }
 
-    public Users(String name, String firstName, String lastName, String phone, String password, String image, String address, String city, String state, String zipCode)
+    public Users(String email, String name, String firstName, String lastName,
+                 String phone, String password, String image, String address,
+                 String city, String state, String zipCode)
     {
+        this.email = email;
         this.name = name;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -21,6 +24,14 @@ public class Users {
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getName() {

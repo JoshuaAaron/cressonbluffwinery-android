@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/register_grapes_1"
     tools:context=".CartActivity">
 
     <RelativeLayout
@@ -18,15 +17,13 @@
             android:id="@+id/total_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Total Price"
+            android:text="Total Price="
             android:textColor="@android:color/white"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textAlignment="center"
             android:layout_marginTop="10dp"
-
             />
     </RelativeLayout>
-
     <TextView
         android:id="@+id/msg1"
         android:layout_width="match_parent"
@@ -36,30 +33,33 @@
         android:layout_marginEnd="10dp"
         android:textAlignment="center"
         android:layout_centerVertical="true"
-        android:text="Congratulations, Your order has been placed successfully. You will receive an email shortly
-         verifying your order."
+        android:text="Congratulations ,your final order has been placed successfully.Soon it will be verified"
         android:textSize="20dp"
         android:visibility="gone"
+
         />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/cart_list"
+        android:id="@+id/cart_list_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/r111"
-        android:layout_above="@+id/next_btn"
-        ></androidx.recyclerview.widget.RecyclerView>
+        android:layout_above="@+id/next_process_btn"
+
+        >
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <Button
-        android:id="@+id/next_btn"
+        android:id="@+id/next_process_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/colorPrimaryDark"
+        android:background="@color/colorPrimaryDark"
         android:text="Next"
         android:textColor="@android:color/white"
-        android:textSize="25dp"
-
+        android:textSize="20sp"
+        android:layout_margin="10dp"
 
         />
 </RelativeLayout>

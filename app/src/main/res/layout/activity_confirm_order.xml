@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ConfirmFinalOrderActivity">
+    tools:context=".ConfirmOrderActivity">
     <TextView
         android:id="@+id/txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Please write your Shipment Details"
+        android:text="Please fill out your Shipping Details"
         android:textSize="18dp"
         android:textColor="@color/colorPrimaryDark"
         android:layout_margin="25dp"
@@ -18,49 +18,72 @@
 
         />
     <EditText
-        android:id="@+id/shippment_name"
+        android:id="@+id/shipment_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:hint="Your Name"
+        android:hint="Name"
 
         />
     <EditText
-        android:id="@+id/shippment_phone_number"
+        android:id="@+id/shipment_phone_number"
         android:inputType="number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/shippment_name"
+        android:layout_below="@+id/shipment_name"
         android:layout_marginTop="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:hint="Your Phone Number"
+        android:hint="Phone Number"
         />
     <EditText
-        android:id="@+id/shippment_address"
+        android:id="@+id/shipment_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/shippment_phone_number"
+        android:layout_below="@+id/shipment_phone_number"
         android:layout_marginTop="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:hint="Your Home Address"
+        android:hint="Street Address"
         />
     <EditText
-        android:id="@+id/shippment_city"
-        android:layout_width="match_parent"
+        android:id="@+id/shipment_city"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/shippment_address"
+        android:layout_below="@+id/shipment_address"
         android:layout_marginTop="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:hint="Your City Name"
+        android:hint="City"
         />
+    <EditText
+        android:id="@+id/shipment_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/shipment_address"
+        android:layout_toRightOf="@+id/shipment_city"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="State"
+        />
+    <EditText
+        android:id="@+id/shipment_zip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/shipment_state"
+        android:layout_below="@+id/shipment_address"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="Zip Code"
+        />
+
     <Button
-        android:id="@+id/confirm_final_order_btn"
+        android:id="@+id/confirm_order_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

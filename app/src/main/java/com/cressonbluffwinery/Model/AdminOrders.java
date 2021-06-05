@@ -1,17 +1,18 @@
 package com.cressonbluffwinery.Model;
 
 public class AdminOrders {
-    private String name,phone,address,city,state,date,time,totalAmount;
+    private String name, phone, address, city, state, zipCode, date, time, totalAmount;
 
     public AdminOrders() {
     }
 
-    public AdminOrders(String name, String phone, String address, String city, String state, String date, String time, String totalAmount) {
+    public AdminOrders(String name, String phone, String address, String city, String state, String zipCode, String date, String time, String totalAmount) {
         this.name = name;
         this.phone = phone;
         this.address = address;
         this.city = city;
         this.state = state;
+        this.zipCode = zipCode;
         this.date = date;
         this.time = time;
         this.totalAmount = totalAmount;
@@ -55,6 +56,14 @@ public class AdminOrders {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     public String getDate() {
