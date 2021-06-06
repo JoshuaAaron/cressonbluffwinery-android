@@ -218,6 +218,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }
+        else if (id == R.id.nav_about)
+        {
+            if(!type.equals("Admin")){
+                Intent intent =new Intent(HomeActivity.this,AboutUsActivity.class);
+                startActivity(intent);
+            }
+
+        }
         else if (id == R.id.nav_categories)
         {
             if(!type.equals("Admin")){

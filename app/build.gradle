@@ -80,6 +80,8 @@ dependencies {
     implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.karumi:dexter:5.0.0'
+    implementation 'com.github.medyo:android-about-page:1.2.6'
+
 
 
     //added dependency for circular profile image view
