@@ -37,6 +37,7 @@ public class CartActivity extends AppCompatActivity
     private TextView txtTotalPrice,txtMsg1;
     private double OverTotalPrice = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,4 +181,5 @@ public class CartActivity extends AppCompatActivity
             }
         });
     }
+
 }
