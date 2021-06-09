@@ -1,4 +1,4 @@
-package com.cressonbluffwinery;
+package com.cressonbluffwinery.Admin;
 
 import android.os.Bundle;
 
@@ -12,13 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cressonbluffwinery.Model.Cart;
+import com.cressonbluffwinery.R;
 import com.cressonbluffwinery.ViewHolder.CartViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class AdminUserProductsActivity extends AppCompatActivity {
+public class AdminUserProductsActivity extends AppCompatActivity
+{
     private RecyclerView productList;
     RecyclerView.LayoutManager layoutManager;
     private DatabaseReference cartListRef;
@@ -45,8 +47,8 @@ public class AdminUserProductsActivity extends AppCompatActivity {
         FirebaseRecyclerAdapter<Cart, CartViewHolder> adapter=new FirebaseRecyclerAdapter<Cart, CartViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull CartViewHolder cartViewHolder, int i, @NonNull Cart cart) {
-                cartViewHolder.txtProductQuantity.setText("Quantity="+cart.getQuantity());
-                cartViewHolder.txtProductPrice.setText("Price = " +cart.getPrice());
+                cartViewHolder.txtProductQuantity.setText("Quantity = "+ cart.getQuantity());
+                cartViewHolder.txtProductPrice.setText("Price = " + cart.getPrice());
                 cartViewHolder.txtProductName.setText(cart.getPname());
             }
 
