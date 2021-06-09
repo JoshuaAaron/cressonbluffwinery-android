@@ -38,13 +38,12 @@ public class SearchProductsActivity extends AppCompatActivity {
         searchBtn = findViewById(R.id.search_btn);
         searchList = findViewById(R.id.search_list);
         searchList.setLayoutManager(new LinearLayoutManager(SearchProductsActivity.this));
+
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 searchInput = inputText.getText().toString();
                 onStart();
-
-
             }
         });
 

@@ -18,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cressonbluffwinery.Admin.AdminMantainProductsActivity;
 import com.cressonbluffwinery.Model.Products;
 import com.cressonbluffwinery.Prevalent.Prevalent;
 import com.cressonbluffwinery.ViewHolder.ProductViewHolder;
@@ -69,11 +70,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!type.equals("Admin")){
+                if(!type.equals("Admin"))
+                {
                     Intent intent =new Intent(HomeActivity.this, CartActivity.class);
                     startActivity(intent);
                 }
-
             }
         });
 

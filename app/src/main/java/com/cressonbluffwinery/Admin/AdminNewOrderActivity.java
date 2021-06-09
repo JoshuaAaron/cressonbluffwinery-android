@@ -1,4 +1,4 @@
-package com.cressonbluffwinery;
+package com.cressonbluffwinery.Admin;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cressonbluffwinery.Model.AdminOrders;
+import com.cressonbluffwinery.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
@@ -48,13 +49,15 @@ public class AdminNewOrderActivity extends AppCompatActivity {
                 holder.userName.setText("Name: " + adminOrders.getName());
                 holder.userPhoneNumber.setText("Phone: " + adminOrders.getPhone());
                 holder.userTotalPrice.setText("Total Amount: " + adminOrders.getTotalAmount());
-                holder.userDateTime.setText("Order at : " + adminOrders.getDate()+"Time"+adminOrders.getTime());
-                holder.userShippingAddress.setText("Shipping Address: " + adminOrders.getAddress() +adminOrders.getCity());
+                holder.userDateTime.setText("Ordered at: " + adminOrders.getDate()+ "Time " +adminOrders.getTime());
+                holder.userShippingAddress.setText("Shipping Address: " + adminOrders.getAddress());
+                holder.userCityState.setText("City, State: " + adminOrders.getCity() + adminOrders.getState());
+
                 holder.showOrdersBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String uID=getRef(i).getKey();
-                        Intent intent =new Intent(AdminNewOrderActivity.this,AdminUserProductsActivity.class);
+                        Intent intent =new Intent(AdminNewOrderActivity.this, AdminUserProductsActivity.class);
                         intent.putExtra("uid",uID);
                         startActivity(intent);
                     }
@@ -68,7 +71,7 @@ public class AdminNewOrderActivity extends AppCompatActivity {
                                         "No"
                                 };
                         AlertDialog.Builder builder=new AlertDialog.Builder(AdminNewOrderActivity.this);
-                        builder.setTitle("Have you shipped this order products?");
+                        builder.setTitle("Have you shipped this order?");
 
                         builder.setItems(options, new DialogInterface.OnClickListener() {
                             @Override
@@ -104,7 +107,7 @@ public class AdminNewOrderActivity extends AppCompatActivity {
 
     public static class AdminOrdersViewHolder extends  RecyclerView.ViewHolder
     {
-        public TextView userName,userPhoneNumber,userTotalPrice,userDateTime,userShippingAddress;
+        public TextView userName,userPhoneNumber,userTotalPrice,userDateTime,userShippingAddress, userCityState;
         private Button showOrdersBtn;
 
 
@@ -114,7 +117,8 @@ public class AdminNewOrderActivity extends AppCompatActivity {
             userPhoneNumber=itemView.findViewById(R.id.order_phone_number);
             userTotalPrice=itemView.findViewById(R.id.order_total_price);
             userDateTime=itemView.findViewById(R.id.order_date_time);
-            userShippingAddress=itemView.findViewById(R.id.order_address_city);
+            userShippingAddress=itemView.findViewById(R.id.order_address);
+            userCityState=itemView.findViewById(R.id.order_city_state);
             showOrdersBtn=itemView.findViewById(R.id.show_all_pdtcs_btn);
         }
     }

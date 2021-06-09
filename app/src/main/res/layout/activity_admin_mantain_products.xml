@@ -6,7 +6,7 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 
-tools:context=".AdminMantainProductsActivity">
+tools:context=".Admin.AdminMantainProductsActivity">
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -87,11 +87,11 @@ tools:context=".AdminMantainProductsActivity">
         android:layout_marginTop="2dp"
         android:textAlignment="center"
         android:padding="12dp"
-        android:layout_margin="15dp"
-        android:background="@drawable/input_design"
+        android:layout_margin="5dp"
+        android:background="@drawable/delete_btn"
         android:textSize="18sp"
         android:layout_below="@+id/apply_changes_btn"
-        android:textColor="@android:color/holo_red_dark"
+        android:textColor="@android:color/white"
 
         />
 

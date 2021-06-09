@@ -13,5 +13,5 @@
     <color name="colorNavBarText">#ffffff</color>
     <color name="colorAccent">#0c4e2e</color>
 
-    <color name="colorHintText">#a8a499</color>
+    <color name="colorHintText">#0c4e2e</color>
 </resources>
